@@ -384,6 +384,16 @@ export default {
     closeImg () {
       this.showBig = false
     },
+    confirmSign () {
+      this.showMatte = false
+      isLogined().then(res => {
+        if (!res.data.success) {
+          this.$router.push('/login')
+        } else {
+          this.savePrice()
+        }
+      })
+    },
     // 担保信息
     toGuaranteeInfo (item) {
       if (this.objCode === 'wood3') { // 木业产品三
@@ -592,9 +602,14 @@ export default {
           this.$router.push('/login')
         } else {
           getUserType().then(res => {
-            console.log(res.data)
+            let userType = res.data.data.userType
+            if (res.data.success && userType === 1) {
+              this.showMatte = true
+              this.phoneNum = res.data.data.mobile
+            } else {
+              this.savePrice()
+            }
           })
-          // this.savePrice()
         }
       })
     },
@@ -608,7 +623,8 @@ export default {
         auditStatus: this.isView + 1,
         attachments: this.imgURLArr.join(','),
         loanOrgInfo: arrMain.concat(addLength),
-        business: str
+        business: str,
+        msgCode: this.msgCode
       }
       let _this = this
       this.$store.commit('SET_LOADING_SHOW', {isShow: true})

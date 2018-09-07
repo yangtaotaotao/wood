@@ -391,6 +391,16 @@ export default {
     closeImg () {
       this.showBig = false
     },
+    confirmSign () {
+      this.showMatte = false
+      isLogined().then(res => {
+        if (!res.data.success) {
+          this.$router.push('/login')
+        } else {
+          this.savePrice()
+        }
+      })
+    },
     // 验证码倒计时
     getVerify () {
       let s = 60
@@ -607,30 +617,15 @@ export default {
         if (!res.data.success) {
           this.$router.push('/login')
         } else {
-          // addLoanOrg(
-          //   {
-          //     id: this.autoId,
-          //     platformAverageprice: this.priceAvg,
-          //     carLine: this.priceC,
-          //     carLineId: this.priceCId,
-          //     carLineValus: [this.priceC1, this.priceC2, this.priceC3],
-          //     goodCar: this.priceM,
-          //     goodCarId: this.priceMId,
-          //     goodCarValus: [this.priceM1, this.priceM2, this.priceM3],
-          //     cattleCar: this.priceN,
-          //     cattleCarId: this.priceNId,
-          //     cattleCarValus: [this.priceN1, this.priceN2, this.priceN3]
-          //   }
-          // ).then(res => {
-          //   if (res.data.success) {
-          //     this.$store.dispatch('setToast', {text: res.data.message})
-          //     this.$router.back()
-          //   }
-          // })
           getUserType().then(res => {
-            console.log(res.data)
+            let userType = res.data.data.userType
+            if (res.data.success && userType === 1) {
+              this.showMatte = true
+              this.phoneNum = res.data.data.mobile
+            } else {
+              this.savePrice()
+            }
           })
-          this.savePrice()
         }
       })
     },
@@ -644,7 +639,8 @@ export default {
         auditStatus: this.isView + 1,
         attachments: this.imgURLArr.join(','),
         loanOrgInfo: arrMain.concat(addLength),
-        business: str
+        business: str,
+        msgCode: this.msgCode
       }
       let _this = this
       _this.$store.commit('SET_LOADING_SHOW', {isShow: true})
