@@ -1,0 +1,143 @@
+@charset "UTF-8";
+$baseColor: rgb(46, 111, 153);
+// $baseColor: #46a5fe;
+.car-icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+.car-column {
+  display: flex;
+  flex-flow: column nowrap;
+}
+.car-row {
+  display: flex;
+  flex-flow: row nowrap;
+}
+.car-main-center {
+  justify-content: center; // 主轴
+  align-items: center; // 交叉轴
+}
+.car-main-start {
+  justify-content: flex-start;
+}
+.car-main-end {
+  justify-content: flex-end;
+}
+.car-main-between {
+  justify-content: space-between;
+}
+.car-main-justify {
+  justify-content: space-around;
+}
+.car-main-full {
+  align-items: stretch;
+}
+.car-align-center {
+  align-items: center;
+}
+.car-input-group {
+  @extend .car-row;
+}
+.btn-group {
+  @extend .car-row;
+  @extend .car-main-center;
+}
+.car-absolute {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+h1{
+  font-size: 18px;
+}
+h2{
+  font-size: 14px;
+}
+a{
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  &:active, &:visited, &:link {
+    text-decoration: none;
+  }
+}
+input{
+  outline: none;
+  border: none;
+  background: #fff;
+}
+input::-webkit-input-placeholder {
+  // WebKit browsers
+  color: #D0E3F0 !important;
+}
+input:-moz-placeholder {
+  // Mozilla Firefox 4 to 18
+  color: #D0E3F0 !important;
+}
+input::-moz-placeholder {
+  // Mozilla Firefox 19+/
+  color: #D0E3F0 !important;
+}
+input:-ms-input-placeholder {
+  // Internet Explorer 10+/
+  color: #D0E3F0 !important;
+}
+textarea {
+  background: #fff;
+}
+.car-t-center {
+  text-align: center;
+}
+.car-t-green {
+  color: #41be54;
+}
+.car-t-white {
+  color: #fff!important;
+}
+.car-t-orange {
+  color: #fe7a34
+}
+.car-t-yellow {
+  color: #eed817;
+}
+.car-t-red {
+  color: #DF2D2D !important;
+}
+.car-t-blue {
+  color: $baseColor !important;
+}
+.car-t-gray {
+  color: #999999 !important;
+}
+.car-t-dgray {
+  color: #666 !important;
+}
+.car-t-grey {
+  color: #757575;
+}
+.car-t-black {
+  color: #000 !important;;
+}
+.car-bg-white {
+  background: #fff!important;
+}
+.car-bg-yellow {
+  background: #ffcc00;
+}
+.car-bg-dgray {
+  background: #757575;
+}
+.car-bg-blue {
+  background: $baseColor !important;
+}
+.car-bg-red {
+  background: #f5544a
+}
+.car-bg-gray {
+  background: #f2f2f2 !important;
+}
