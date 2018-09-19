@@ -34,6 +34,38 @@ export default {
         }
       })
     },
+    // 时间格式化
+    /**
+     * 时间戳转换日期
+     * @param <int> unixTime    待时间戳(毫秒)
+     * @param <int>  timeZone   时区
+     */
+    formatDate (unixTime, timeZone) {
+      if (typeof (timeZone) === 'number') {
+        unixTime = parseInt(unixTime) + parseInt(timeZone) * 60 * 60
+      }
+      let time
+      let secondsBack = unixTime // 返回的时间戳
+      let date = new Date(secondsBack) // 返回的时间戳转为日期对象
+      let secondsNow = new Date().getTime() // 当前的时间戳
+      let secondsStart = new Date(new Date().toLocaleDateString()).getTime() // 今天凌晨的时间戳
+      let nowStart = secondsNow - secondsStart // 当前时间到当天凌晨的时间差
+      let nowBack = secondsNow - secondsBack // 当前时间到返回时间的时间差
+      let oneDay = 24 * 60 * 60 * 1000 // 一天的毫秒数
+      let oneWeek = 7 * 24 * 60 * 60 * 1000 // 一周的毫秒数
+      if (nowBack < nowStart) { // 返回的日前到当前的时间差比现在到凌晨的时间小 为今日
+        time = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':' + date.getMinutes()
+      } else if (nowStart < nowBack && nowBack < (oneDay + nowStart)) {
+        // 现在到凌晨的时间 < 时间差 < 昨天凌晨到现在的时间
+        time = '昨天'
+      } else if ((oneDay + nowStart) < nowBack && nowBack < (oneWeek + nowStart)) {
+        let arr = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+        time = arr[date.getDay()]
+      } else {
+        time = ((date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)) + '-' + date.getDate()
+      }
+      return time
+    },
     ...mapMutations([
       'SET_LOADING_SHOW'
     ])
@@ -45,18 +77,15 @@ export default {
       'isLoadingShow', 'toast'
     ])
   },
-
   watch: {
     $route (to, from) {
       this.SET_LOADING_SHOW({isShow: false})
       // this.isLogin()
     }
   },
-
   beforeMount () {
     beforeMount()
   },
-
   mounted (state) {
     this.$el.style.height = `${window.innerHeight}px`
     isLogined().then(res => {
@@ -64,6 +93,29 @@ export default {
         this.$router.push('/login')
       }
     })
+    let test1 = 1537203030000 // 2018.9.18 00:50:30
+    console.log('今天-------------------')
+    console.log(this.formatDate(test1))
+
+    let test2 = 1537199999000 // 2018.9.17 01:50:30
+    console.log('昨天-------------------')
+    console.log(this.formatDate(test2))
+
+    let test3 = 1537033830000 // 2018.9.16 01:50:30
+    console.log('前天 周日---------------')
+    console.log(this.formatDate(test3))
+
+    let test4 = 1536623430000 // 2018.9.11 07:50:30
+    console.log('上周二 上午----------------')
+    console.log(this.formatDate(test4))
+
+    let test5 = 1536663030000 // 2018.9.11 18:50:30
+    console.log('上周二 下午')
+    console.log(this.formatDate(test5))
+
+    let test6 = 1536576630000 // 2018.9.10 18:50:30
+    console.log('以前-------------')
+    console.log(this.formatDate(test6))
   }
 }
 </script>

@@ -57,6 +57,23 @@ export default {
   },
 
   methods: {
+    browserRedirect () {
+      var sUserAgent = navigator.userAgent.toLowerCase()
+      var bIsIpad = sUserAgent.match(/ipad/i) === 'ipad'
+      var bIsIphoneOs = sUserAgent.match(/iphone os/i) === 'iphone os'
+      var bIsMidp = sUserAgent.match(/midp/i) === 'midp'
+      var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) === 'rv:1.2.3.4'
+      var bIsUc = sUserAgent.match(/ucweb/i) === 'ucweb'
+      var bIsAndroid = sUserAgent.match(/android/i) === 'android'
+      var bIsCE = sUserAgent.match(/windows ce/i) === 'windows ce'
+      var bIsWM = sUserAgent.match(/windows mobile/i) === 'windows mobile'
+      if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+        // 跳转移动端页面
+        return true
+      } else {
+        return false
+      }
+    },
     isLogin () {
       isLogined().then(res => {
         if (!res.data.success) {
@@ -82,31 +99,37 @@ export default {
     },
     loginBtn () {
       let {username, password, captcha} = this
-      // var u = navigator.userAgent
-      // var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1 // android终端
-      // /* eslint-disable */
-      // var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
-      // var deviceId
-      // if (isAndroid) {
-      //   /* eslint-disable */
-      //   deviceId = window.AndroidJsDeviceSetting.getDeviceId()
-      // } else {
-      //   /* eslint-disable */
-      //   deviceId = getDeviceld()
-      // }
+      var u = navigator.userAgent
+      var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1 // android终端
+      /* eslint-disable */
+      var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
+      var deviceId
+      if (this.browserRedirect()) {
+        if (isAndroid) {
+          /* eslint-disable */
+          deviceId = window.AndroidJsDeviceSetting.getDeviceId()
+        } else {
+          /* eslint-disable */
+          deviceId = getDeviceld()
+        }
+      } else {
+        deviceId = 'Aoy6l7TxJxfDehouJ1IRwCFRlI3gKq_48iQx9YyQWtJi'
+      }
       if (username && password && captcha) {
-        Login({username, password, captcha, deviceId: 'Aoy6l7TxJxfDehouJ1IRwCFRlI3gKq_48iQx9YyQWtJi', rememberMe: 1}).then(res => {
+        Login({username, password, captcha, deviceId, rememberMe: 1}).then(res => {
           let success = res.data.success
           let message = res.data.message
           if (success) {
             this.$router.push(`/index?userType=${res.data.data.userType}`)
             let userId = res.data.data.userId
             localStorage.setItem('userId', userId)
-            // if (isAndroid) {
-            //   window.AndroidJsDeviceSetting.setUserAlias(userId)
-            // } else {
-            //   setUserAlias(userId)
-            // }
+            if (this.browserRedirect()) {
+              if (isAndroid) {
+                window.AndroidJsDeviceSetting.setUserAlias(userId)
+              } else {
+                setUserAlias(userId)
+              }
+            }
           } else {
             this.$store.dispatch('setToast', {text: message})
           }

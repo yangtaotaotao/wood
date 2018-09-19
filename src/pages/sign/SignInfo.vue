@@ -143,7 +143,7 @@
         </div>
       </div>
     </div>
-    <div class="info-footer car-row" v-if="auditStatus">
+    <div class="info-footer car-row" v-if="auditStatus > 0 && loanStatus == 1">
       <div class="confirm car-row car-main-center car-bg-blue car-t-white" @click="confirmPrice">复核签章</div>
       <div class="cancle car-row car-main-center car-t-blue" @click="goBack">取消</div>
     </div>
@@ -218,7 +218,8 @@ export default {
       msgCode: '',
       isDisabled: true,
       verifyPoint: '60s后重新发送',
-      seconds: 60
+      seconds: 60,
+      loanStatus: 0
     }
   },
 
@@ -321,6 +322,7 @@ export default {
               let customerBank = res.data.data.customerBank
               this.phoneNum = customer.phoneNum
               this.auditStatus = loan.auditStatus
+              this.loanStatus = loan.loanStatus
               this.loanWoodGuarantees = res.data.data.loanWoodGuarantees
               this.objCode = product.objCode // 产品编码
               this.isAdmittanceName = customer.isAdmittanceName // 是否准入

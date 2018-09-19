@@ -11,18 +11,18 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      // '/bba-wood': { // 代理 测试
+      // '/bmci-mcp': { // 代理 测试
       //   target: 'http://dev.bcste.cn/',
       //   changeOrigin: true
       // }
-      '/bmci-mcp': { // 测试
-        target: 'http://xedk.bmci.cn/',
-        changeOrigin: true
-      }
-      // '/bba-wood': { // 正式
-      //   target: 'http://my.bmci.cn/',
+      // '/bmci-mcp': { // 测试
+      //   target: 'http://xedk.bmci.cn/',
       //   changeOrigin: true
       // }
+      '/bmci-mcp': { // 正式
+        target: 'http://mcp.bmci.cn/',
+        changeOrigin: true
+      }
     },
 
     // Various Dev Server settings
